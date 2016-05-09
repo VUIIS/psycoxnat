@@ -75,24 +75,30 @@ class EObject(object):
 class Project(EObject):
     def __init__(self, uri, interface, hierarchy='project'):
         EObject.__init__(self, uri, interface, hierarchy)
+        self._uri = uri
+        self.project_id = self._get_project_id_from_uri()
 
     def prearchive_code(self):
-        pass
+        self._interface.select(sql_project.PROJECT_PREARCHIVE_QUERY,(self.project_id))
+        return self._interface.fetchone()
 
     def set_prearchive_code(self, code):
-        pass
+        self._interface.execute(sql_project.PROJECT_SET_PREARCHIVE_CODE, (code, self.project_id))
+        self._interface.commit()
 
     def quarantine_code(self):
-        pass
+        self._interface.select(sql_project.PROJECT_QUARANTINE_QUERY,(self.project_id))
 
     def set_quarantine_code(self, code):
-        pass
+        self._interface.select(sql_project.PROJECT_QUARANTINE_QUERY,(code, self.project_id))
+        self._interface.commit()
 
     def current_arc(self):
-        pass
+        self._interface.select(sql_project.PROJECT_CURRENT_ARC, (self.project_id))
+        return self._interface.fetchone()
 
     def set_subfolder_in_current_arc(self, subfolder):
-        pass
+        raise NotImplementedError
 
     def accessibility(self):
         pass
@@ -128,8 +134,8 @@ class Project(EObject):
         pass
 
     def experiment(self, id):
+        pass
 
-    pass
     def last_modified(self):
         pass
 

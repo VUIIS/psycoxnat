@@ -55,4 +55,10 @@ class Interface(object):
     def has_multiple_entries(self):
         return len(self.cursor.fetchall()) > 1
 
+    def commit(self):
+        self._connection.commit()
+
+    def fetchone(self):
+        return self._connection.fetchone()
+
 
